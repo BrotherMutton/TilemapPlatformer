@@ -10,6 +10,11 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float jumpforce;
 
+    public Transform groundCheckPoint; // used to prevent 'jumping' up the side of platforms
+    public float groundCheckRadius;
+    private bool isTouchingGround;
+    public LayerMask groundLayer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,16 +24,27 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void FixedUpdate()
     {
+        isTouchingGround = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, groundLayer);
+
         float moveHorizontal = Input.GetAxis("Horizontal");
 
         Vector2 movement = new Vector2(moveHorizontal, 0);
 
+        rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+
+
         rb2d.AddForce(movement * speed);
+
+        if(Input.GetButtonDown("Jump") && isTouchingGround)
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpforce);
+        }
+    
 
         if (Input.GetKey("escape"))
         {
@@ -36,8 +52,9 @@ public class PlayerController : MonoBehaviour
         }
 
 
-    }
 
+    }
+/*
     void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.collider.tag == "Ground")
@@ -48,5 +65,5 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
+*/
 }

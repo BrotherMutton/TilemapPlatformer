@@ -1,12 +1,18 @@
 fileFormatVersion: 2
 guid: c73be6ae6feab804889931b51d52c1e3
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: 32x32-AutumnSpriteSheet_0
-    21300002: 32x32-AutumnSpriteSheet_1
-    21300004: 32x32-AutumnSpriteSheet_2
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: 32x32-AutumnSpriteSheet_0
+  - first:
+      213: 21300002
+    second: 32x32-AutumnSpriteSheet_1
+  - first:
+      213: 21300004
+    second: 32x32-AutumnSpriteSheet_2
   externalObjects: {}
-  serializedVersion: 9
+  serializedVersion: 10
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -106,13 +112,14 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: 98620032a29a4d44f9983034c38f0a9e
+      internalID: 21300000
       vertices: []
       indices: 
       edges: []
@@ -126,13 +133,18 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape: []
+      physicsShape:
+      - - {x: -16, y: 16}
+        - {x: 16, y: 16}
+        - {x: 16, y: -16}
+        - {x: -16, y: -16}
       tessellationDetail: 0
       bones: []
       spriteID: 053abd327e9025c4e9b44f5a52e5ee7a
+      internalID: 21300002
       vertices: []
       indices: 
       edges: []
@@ -146,13 +158,14 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: e5cbf193f174b374cbeb82c1bc9e4c8b
+      internalID: 21300004
       vertices: []
       indices: 
       edges: []
@@ -161,10 +174,12 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 3c06177c04f2d20488e9365063d273b1
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
+    secondaryTextures: []
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
