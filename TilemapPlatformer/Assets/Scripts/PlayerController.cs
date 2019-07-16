@@ -1,14 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
 
     private Rigidbody2D rb2d;
 
+    private int count;
+    private int lives;
+
     public float speed;
     public float jumpforce;
+
+    public Text winText;
+    public Text countText;
+    public Text livesText;
+
 
     public Transform groundCheckPoint; // used to prevent 'jumping' up the side of platforms
     public float groundCheckRadius;
@@ -19,6 +28,15 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+
+        count = 0;
+        lives = 3;
+
+        winText.text = "";
+
+        SetCountText();
+
+
     }
 
     // Update is called once per frame
@@ -54,16 +72,30 @@ public class PlayerController : MonoBehaviour
 
 
     }
-/*
-    void OnCollisionStay2D(Collision2D collision)
+
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.collider.tag == "Ground")
+        if (other.gameObject.CompareTag("PickUp"))
         {
-            if(Input.GetKey(KeyCode.UpArrow))
-            {
-                rb2d.AddForce(new Vector2(0,jumpforce), ForceMode2D.Impulse);
-            }
+          other.gameObject.SetActive(false);
+          count++;
+          SetCountText();
         }
     }
-*/
+
+    void SetCountText()
+    {
+        countText.text = "Count: " + count.ToString();
+        livesText.text = "Lives: " + lives.ToString();
+        
+        if(count >= 6)
+        {
+            winText.text = "You win!";
+        }
+        if (lives == 0)
+        {
+            winText.text = "You lost! :(";
+            gameObject.SetActive(false);
+        }
+    }
 }
