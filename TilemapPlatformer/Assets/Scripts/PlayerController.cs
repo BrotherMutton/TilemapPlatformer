@@ -5,18 +5,29 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-
+    // Movement Variables
     private Rigidbody2D rb2d;
-
-    private int count;
-    private int lives;
-
     public float speed;
     public float jumpforce;
 
+    
+    // Text Variables
     public Text winText;
     public Text countText;
-    public Text livesText;
+    public Text livesText;    
+    private int count;
+    private int lives;
+    private bool hasReset=false;
+
+    // Camera, Scene Jumping Variables
+    public Camera sceneCamera;
+    public Vector3 scene2;
+    public Vector3 newOrigin;
+
+    // Audio Variables
+    public AudioClip backgroundMusic;
+    public AudioClip winMusic;
+    public AudioSource musicSource;
 
 
     public Transform groundCheckPoint; // used to prevent 'jumping' up the side of platforms
@@ -35,6 +46,10 @@ public class PlayerController : MonoBehaviour
         winText.text = "";
 
         SetCountText();
+
+        musicSource.clip = backgroundMusic;
+        musicSource.Play();
+        musicSource.loop = true;   
 
 
     }
@@ -58,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
         rb2d.AddForce(movement * speed);
 
-        if(Input.GetButtonDown("Jump") && isTouchingGround)
+        if(Input.GetButtonDown("Vertical") && isTouchingGround)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpforce);
         }
@@ -81,6 +96,12 @@ public class PlayerController : MonoBehaviour
           count++;
           SetCountText();
         }
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            other.gameObject.SetActive(false);
+            lives--;
+            SetCountText();
+        }
     }
 
     void SetCountText()
@@ -88,11 +109,21 @@ public class PlayerController : MonoBehaviour
         countText.text = "Count: " + count.ToString();
         livesText.text = "Lives: " + lives.ToString();
         
-        if(count >= 6)
+        if(count == 6 && hasReset == false)
+        {
+            lives = 3;
+            livesText.text = "Lives: " + lives.ToString();
+            sceneCamera.transform.position = scene2;
+            gameObject.transform.position = newOrigin;
+            hasReset = true;
+        }
+        if(count >= 10)
         {
             winText.text = "You win!";
+            musicSource.clip = winMusic;
+            musicSource.Play();
         }
-        if (lives == 0)
+        if(lives == 0)
         {
             winText.text = "You lost! :(";
             gameObject.SetActive(false);
