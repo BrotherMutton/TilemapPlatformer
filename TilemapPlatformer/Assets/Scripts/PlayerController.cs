@@ -65,15 +65,23 @@ public class PlayerController : MonoBehaviour
     // Setting Animation States
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
+        if(Input.GetKeyDown(KeyCode.A))
         {
             anim.SetInteger("State", 1);
         }
-
-     if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        if (Input.GetKeyUp(KeyCode.A))
         {
             anim.SetInteger("State", 0);
         }
+        if(Input.GetKeyDown(KeyCode.D))
+        {
+            anim.SetInteger("State", 1);
+        }
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            anim.SetInteger("State", 0);
+        }
+
 
     }
 
@@ -94,20 +102,11 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetButtonDown("Vertical") && isTouchingGround)
         {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpforce);      
+            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpforce);
+            anim.SetTrigger("Jump");   
         }
-        
-        if(isTouchingGround == false)          
-        {
-            anim.SetInteger("State", 3);
-        }
-        else if(isTouchingGround == true)  
-        {
-            anim.SetInteger("State", 0);
-        }      
 
-        
-
+        HandleLayers();
 
 
         // Flipping Code
@@ -178,5 +177,17 @@ public class PlayerController : MonoBehaviour
     Vector2 Scaler = transform.localScale;
     Scaler.x = Scaler.x * -1;
     transform.localScale = Scaler;
+    }
+
+    private void HandleLayers()
+    {
+        if(!isTouchingGround)
+        {
+            anim.SetLayerWeight(1,1);
+        }
+        else
+        {
+            anim.SetLayerWeight(1,0);
+        }
     }
 }
