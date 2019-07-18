@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     private int count;
     private int lives;
     private bool hasReset=false;
+    private bool hasWon=false;
 
     // Camera, Scene Jumping Variables
     public Camera sceneCamera;
@@ -29,7 +30,13 @@ public class PlayerController : MonoBehaviour
     public AudioClip winMusic;
     public AudioSource musicSource;
 
+    // animation variables
 
+    Animator anim;
+    private bool facingRight = true;
+
+
+    // ground checking variables
     public Transform groundCheckPoint; // used to prevent 'jumping' up the side of platforms
     public float groundCheckRadius;
     private bool isTouchingGround;
@@ -39,6 +46,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
         count = 0;
         lives = 3;
@@ -49,14 +57,23 @@ public class PlayerController : MonoBehaviour
 
         musicSource.clip = backgroundMusic;
         musicSource.Play();
-        musicSource.loop = true;   
+        musicSource.loop = true;  
 
 
     }
 
-    // Update is called once per frame
+    // Setting Animation States
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
+        {
+            anim.SetInteger("State", 1);
+        }
+
+     if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        {
+            anim.SetInteger("State", 0);
+        }
 
     }
 
@@ -73,10 +90,35 @@ public class PlayerController : MonoBehaviour
 
         rb2d.AddForce(movement * speed);
 
+        
+
         if(Input.GetButtonDown("Vertical") && isTouchingGround)
         {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpforce);
+            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpforce);      
         }
+        
+        if(isTouchingGround == false)          
+        {
+            anim.SetInteger("State", 3);
+        }
+        else if(isTouchingGround == true)  
+        {
+            anim.SetInteger("State", 0);
+        }      
+
+        
+
+
+
+        // Flipping Code
+        if (facingRight == false && moveHorizontal > 0)
+            {
+            Flip();
+            }
+        else if (facingRight == true && moveHorizontal < 0)
+            {
+            Flip();
+            }
     
 
         if (Input.GetKey("escape"))
@@ -117,16 +159,24 @@ public class PlayerController : MonoBehaviour
             gameObject.transform.position = newOrigin;
             hasReset = true;
         }
-        if(count >= 10)
+        if(count >= 10 && hasWon == false)
         {
             winText.text = "You win!";
             musicSource.clip = winMusic;
             musicSource.Play();
+            hasWon = true;
         }
         if(lives == 0)
         {
             winText.text = "You lost! :(";
             gameObject.SetActive(false);
         }
+    }
+    void Flip()
+    {
+    facingRight = !facingRight;
+    Vector2 Scaler = transform.localScale;
+    Scaler.x = Scaler.x * -1;
+    transform.localScale = Scaler;
     }
 }
